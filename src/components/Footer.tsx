@@ -15,7 +15,7 @@ export function Footer() {
         <div>
           <p className="caps mb-4 text-xs text-gold">Plateforme</p>
           <ul className="space-y-2 text-sm text-cream/80">
-            {[['/formations', 'Toutes les formations'], ['/a-propos', 'À propos'], ['/#tarifs', 'Tarifs'], ['/#faq', 'Questions fréquentes'], ['/mon-espace', 'Mon espace']].map(([to, l]) => <li key={to}><Link to={to} className="hover:text-gold">{l}</Link></li>)}
+            {[['/formations', 'Toutes les formations'], ['/a-propos', 'À propos'], ['/#tarifs', 'Tarifs'], ['/#faq', 'Questions fréquentes'], ['/certificats', 'Vérifier un certificat'], ['/mon-espace', 'Mon espace']].map(([to, l]) => <li key={to}><Link to={to} className="hover:text-gold">{l}</Link></li>)}
           </ul>
         </div>
         <div>
