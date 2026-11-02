@@ -8,7 +8,7 @@ import { publishedCourses, useStore } from '../lib/store'
 
 export default function Formations() {
   useStore()
-  useSeo({ title: 'Formations en éducation financière chrétienne', description: 'Budget, épargne, dettes, projets, générosité : découvrez les formations SFC Finances, à suivre à votre rythme depuis Lomé, le Togo ou ailleurs.', path: '/formations' })
+  useSeo({ title: 'Formations en éducation financière chrétienne', description: 'Deux formations avec Odile T. : « Reprendre le contrôle de vos finances » (3 semaines, 70 €) et « Restaurer et Prospère » (8 semaines, 500 €), à suivre en ligne.', path: '/formations' })
   const all = publishedCourses()
   const [q, setQ] = useState(''); const [pillar, setPillar] = useState('Toutes'); const [level, setLevel] = useState('Tous'); const [sort, setSort] = useState('pop')
   const pillars = ['Toutes', ...new Set(all.map((c) => c.pillar))]

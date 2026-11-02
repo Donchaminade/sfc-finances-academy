@@ -5,25 +5,28 @@ import { CourseCard } from '../components/CourseCard'
 import { Item, Parallax, Reveal, Stagger } from '../components/motion'
 import { SocialIcon } from '../components/SocialIcon'
 import { AsyncButton, DemoNote, Eyebrow } from '../components/ui'
-import { WHATSAPP_CHANNEL, brand, faq, odile, pillars, plans, socials, testimonials } from '../content/brand'
+import { ResourceCard } from '../components/ResourceCard'
+import { WHATSAPP_CHANNEL, brand, faq, groupOffer, odile, pillars, socials, testimonials } from '../content/brand'
+import { PRICE_NOTE } from '../content/resources'
 import { Link } from '../lib/router'
-import { faqLd, odileLd, useSeo } from '../lib/seo'
-import { publishedCourses, useStore } from '../lib/store'
+import { courseLd, faqLd, odileLd, useSeo } from '../lib/seo'
+import { eur, fcfa, getResources, lessonsOf, publishedCourses, useStore } from '../lib/store'
 
 const icons = [Landmark, Wallet, PiggyBank, Route, Scale, HandHeart]
 
 export default function Landing() {
   useStore()
   const reduce = useReducedMotion()
-  useSeo({ title: 'SFC Finances – La sagesse divine au service de vos finances', description: 'Éducation financière chrétienne à Lomé (Togo) : budget, épargne, sortie des dettes et générosité, selon la Parole de Dieu, avec Odile T.', path: '/', jsonld: [odileLd, faqLd(faq)] })
+  useSeo({ title: 'SFC Finances – La sagesse divine au service de vos finances', description: 'Éducation financière chrétienne en français avec Odile T. : deux formations, « Reprendre le contrôle de vos finances » (3 semaines) et « Restaurer et Prospérer » (8 semaines).', path: '/', jsonld: [odileLd, faqLd(faq), ...publishedCourses().map(courseLd)] })
   const courses = publishedCourses()
+  const resources = getResources()
   return (
     <>
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 pb-16 pt-12 sm:px-6 md:grid-cols-[1.1fr_.9fr] md:pt-20">
           <div>
-            <motion.p className="caps text-xs font-semibold text-gold-deep" initial={reduce ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>Éducation financière · {brand.location}</motion.p>
+            <motion.p className="caps text-xs font-semibold text-gold-deep" initial={reduce ? false : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>Éducation financière chrétienne</motion.p>
             <motion.h1 className="display mt-4 text-[2.6rem] font-semibold leading-[1.05] text-green sm:text-6xl" initial={reduce ? false : { opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.05 }}>
               <span className="caps block text-lg tracking-[0.3em] text-ink sm:text-xl">SFC Finances</span>
               La sagesse divine au service de vos finances
@@ -72,8 +75,9 @@ export default function Landing() {
       {/* FORMATIONS */}
       <section className="bg-sand/60" aria-labelledby="formations">
         <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
-          <Reveal className="flex flex-wrap items-end justify-between gap-4"><div><Eyebrow>Nos formations</Eyebrow><h2 id="formations" className="display text-4xl font-semibold text-green sm:text-5xl">Des parcours pas à pas</h2></div><Link to="/formations" className="btn-ghost">Tout le catalogue <ArrowRight className="h-4 w-4" /></Link></Reveal>
-          <Stagger className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{courses.slice(0, 3).map((c) => <Item key={c.slug}><CourseCard c={c} /></Item>)}</Stagger>
+          <Reveal className="flex flex-wrap items-end justify-between gap-4"><div><Eyebrow>Nos formations</Eyebrow><h2 id="formations" className="display text-4xl font-semibold text-green sm:text-5xl">Des parcours pas à pas</h2></div><Link to="/formations" className="btn-ghost">Voir les formations <ArrowRight className="h-4 w-4" /></Link></Reveal>
+          <p className="mt-4 max-w-2xl text-mute">Deux parcours structurés semaine par semaine, avec Odile T. : vidéos, lectures, cahier d’exercices, quiz et certificat.</p>
+          <Stagger className="mt-10 grid gap-6 md:grid-cols-2">{courses.map((c) => <Item key={c.slug}><CourseCard c={c} /></Item>)}</Stagger>
         </div>
       </section>
 
@@ -99,7 +103,7 @@ export default function Landing() {
           <Stagger className="mt-10 grid gap-5 md:grid-cols-2">
             {testimonials.map((t) => <Item key={t.name} className="rounded-2xl border border-cream/10 bg-cream/5 p-6">
               <p className="display text-xl italic leading-snug">« {t.text} »</p>
-              <p className="mt-4 text-sm"><span className="font-semibold text-gold">{t.name}</span> <span className="text-cream/60">· {t.city}</span> <span className="ml-2 rounded-full bg-cream/10 px-2 py-0.5 text-[11px] text-cream/70">Exemple</span></p>
+              <p className="mt-4 text-sm"><span className="font-semibold text-gold">{t.name}</span> <span className="ml-2 rounded-full bg-cream/10 px-2 py-0.5 text-[11px] text-cream/70">Exemple</span></p>
             </Item>)}
           </Stagger>
         </div>
@@ -107,16 +111,32 @@ export default function Landing() {
 
       {/* PRICING */}
       <section id="tarifs" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6" aria-labelledby="tarifs-t">
-        <Reveal className="mx-auto max-w-2xl text-center"><Eyebrow>Tarifs</Eyebrow><h2 id="tarifs-t" className="display text-4xl font-semibold text-green sm:text-5xl">Investir dans la sagesse</h2><p className="mt-4 text-mute">Un accès simple et transparent. Chaque formation est accessible à vie après achat ; le Pass Sagesse ouvre tout le catalogue pendant 12 mois.</p></Reveal>
+        <Reveal className="mx-auto max-w-2xl text-center"><Eyebrow>Tarifs</Eyebrow><h2 id="tarifs-t" className="display text-4xl font-semibold text-green sm:text-5xl">Investir dans la sagesse</h2><p className="mt-4 text-mute">Deux formations, un paiement unique chacune. L’achat débloque uniquement la formation choisie, avec un accès à vie.</p></Reveal>
         <Stagger className="mt-12 grid gap-6 md:grid-cols-3">
-          {plans.map((p) => <Item key={p.name} className={`relative flex flex-col rounded-3xl border p-7 ${p.highlight ? 'border-green bg-green text-cream shadow-lift' : 'card'}`}>
-            {p.highlight && <span className="absolute -top-3 left-7 rounded-full bg-gold px-3 py-1 text-xs font-bold text-green-deep">Recommandé</span>}
-            <h3 className={`caps text-sm font-semibold ${p.highlight ? 'text-gold' : 'text-gold-deep'}`}>{p.name}</h3>
-            <p className="display mt-3 text-4xl font-semibold">{p.price}</p><p className={`text-sm ${p.highlight ? 'text-cream/70' : 'text-mute'}`}>{p.period}</p>
-            <ul className="mt-6 space-y-2.5 text-sm">{p.features.map((f) => <li key={f} className="flex gap-2"><Check className={`h-4 w-4 shrink-0 ${p.highlight ? 'text-gold' : 'text-green'}`} />{f}</li>)}</ul>
-            <Link to={p.highlight ? '/paiement/pass' : p.price === 'Sur demande' ? '/#contact' : '/formations'} className={`mt-8 ${p.highlight ? 'btn-gold' : 'btn-ghost'}`}>{p.cta}</Link>
-          </Item>)}
+          {courses.map((c, i) => { const hl = i === courses.length - 1; return <Item key={c.slug} className={`relative flex flex-col rounded-3xl border p-7 ${hl ? 'border-green bg-green text-cream shadow-lift' : 'card'}`}>
+            {hl && <span className="absolute -top-3 left-7 rounded-full bg-gold px-3 py-1 text-xs font-bold text-green-deep">Programme complet</span>}
+            <h3 className={`caps text-sm font-semibold ${hl ? 'text-gold' : 'text-gold-deep'}`}>{c.title}</h3>
+            <p className="num display mt-3 text-4xl font-semibold">{eur(c.price)}</p><p className={`text-sm ${hl ? 'text-cream/70' : 'text-mute'}`}>{c.duration} · ≈ {fcfa(c.price)}</p>
+            <ul className="mt-6 space-y-2.5 text-sm">{[`${c.modules.length} semaines de contenu`, `${lessonsOf(c).length} leçons et quiz`, 'Cahier d’exercices PDF', 'Certificat de réussite', 'Accès à vie'].map((f) => <li key={f} className="flex gap-2"><Check className={`h-4 w-4 shrink-0 ${hl ? 'text-gold' : 'text-green'}`} />{f}</li>)}</ul>
+            <Link to={`/formations/${c.slug}`} className={`mt-8 ${hl ? 'btn-gold' : 'btn-primary'}`}>Découvrir la formation</Link>
+          </Item> })}
+          <Item className="card relative flex flex-col rounded-3xl border p-7">
+            <h3 className="caps text-sm font-semibold text-gold-deep">{groupOffer.name}</h3>
+            <p className="display mt-3 text-4xl font-semibold">{groupOffer.price}</p><p className="text-sm text-mute">{groupOffer.period}</p>
+            <ul className="mt-6 space-y-2.5 text-sm">{groupOffer.features.map((f) => <li key={f} className="flex gap-2"><Check className="h-4 w-4 shrink-0 text-green" />{f}</li>)}</ul>
+            <Link to="/#contact" className="btn-ghost mt-8">{groupOffer.cta}</Link>
+          </Item>
         </Stagger>
+        <p className="mt-6 text-center text-xs text-mute">Montants en FCFA indicatifs (1 € = 655,957 FCFA).</p>
+      </section>
+
+      {/* RESSOURCES */}
+      <section id="ressources" className="scroll-mt-20 border-t border-line" aria-labelledby="ressources-t">
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+          <Reveal className="flex flex-wrap items-end justify-between gap-4"><div><Eyebrow>Ressources</Eyebrow><h2 id="ressources-t" className="display text-4xl font-semibold text-green sm:text-5xl">Le livre et le planner d’Odile T.</h2></div><Link to="/ressources" className="btn-ghost">Toutes les ressources <ArrowRight className="h-4 w-4" /></Link></Reveal>
+          <Stagger className="mt-10 grid gap-6 lg:grid-cols-2">{resources.map((r) => <Item key={r.id}><ResourceCard r={r} /></Item>)}</Stagger>
+          <p className="mt-5 text-xs text-mute">{PRICE_NOTE}</p>
+        </div>
       </section>
 
       {/* FAQ */}
@@ -153,7 +173,6 @@ export function Contact() {
           <p className="mt-4 text-mute">{brand.socialLine}</p>
           <a href={WHATSAPP_CHANNEL} target="_blank" rel="noopener noreferrer" className="btn mt-6 bg-[#1f8f4e] px-6 py-3 text-white hover:bg-green-deep"><SocialIcon id="whatsapp" className="h-5 w-5" /> Rejoindre la chaîne</a>
           <ul className="mt-6 flex flex-wrap gap-2">{socials.filter((s) => s.id !== 'whatsapp').map((s) => <li key={s.id}><a href={s.url} target="_blank" rel="noopener noreferrer" className="btn-ghost"><SocialIcon id={s.id} />{s.name}</a></li>)}</ul>
-          <p className="mt-6 text-sm text-mute">{brand.location}</p>
         </Reveal>
         <Reveal delay={0.1}>
           <form className="card space-y-4 p-6" onSubmit={(e) => e.preventDefault()}>

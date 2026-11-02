@@ -1,11 +1,11 @@
-import { BarChart3, BookOpen, ExternalLink, LogOut, Menu, Users, X } from 'lucide-react'
+import { BarChart3, BookOpen, ExternalLink, LogOut, Menu, Users, X, Library } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { Logo } from '../../components/ui'
 import { Link, Redirect, navigate, usePath } from '../../lib/router'
 import { useSeo } from '../../lib/seo'
 import { currentUser, logout, useStore } from '../../lib/store'
 
-const nav = [['/admin', 'Tableau de bord', BarChart3], ['/admin/formations', 'Formations', BookOpen], ['/admin/utilisateurs', 'Utilisateurs', Users]] as const
+const nav = [['/admin', 'Tableau de bord', BarChart3], ['/admin/formations', 'Formations', BookOpen], ['/admin/utilisateurs', 'Utilisateurs', Users], ['/admin/ressources', 'Ressources', Library]] as const
 
 export function AdminLayout({ title, children, actions }: { title: string; children: ReactNode; actions?: ReactNode }) {
   useStore(); const path = usePath(); const [open, setOpen] = useState(false)

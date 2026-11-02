@@ -21,7 +21,7 @@ export const directrice = {
 export const parcours = [
   { label: 'La conviction', text: 'Le constat que beaucoup de familles manquent de repères pour gérer leurs revenus avec sérénité.' },
   { label: 'La vision', text: 'Relier foi et bonne gestion financière dans un enseignement clair, pratique et respectueux.' },
-  { label: 'La création de SFC Finances', text: 'Le lancement d’une plateforme d’éducation financière ouverte à tous, depuis Lomé.' },
+  { label: 'La création de SFC Finances', text: 'Le lancement d’une plateforme d’éducation financière ouverte à tous.' },
   { label: 'Aujourd’hui', text: 'Des enseignements partagés en ligne et une équipe pédagogique autour d’Odile T., conseillère en finances personnelles.' },
 ]
 

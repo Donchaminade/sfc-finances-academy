@@ -9,9 +9,9 @@ import { useFileUrl } from '../../lib/useFileUrl'
 import { AdminLayout, Tip } from './AdminLayout'
 
 const uid = (p: string) => p + crypto.randomUUID().slice(0, 8)
-const blank = (): Course => ({ id: uid('c'), slug: '', title: '', subtitle: '', description: '', pillar: 'Intendance biblique', level: 'Débutant', price: 29, duration: '1 h 30', cover: '/img/cover-intendance.webp', status: 'draft', outcomes: [], verses: [], updatedAt: 0, modules: [{ id: uid('m'), title: 'Module 1', lessons: [] }] })
+const blank = (): Course => ({ id: uid('c'), slug: '', title: '', subtitle: '', description: '', pillar: 'Budget & organisation', level: 'Débutant', price: 70, duration: '3 semaines', cover: '/img/cover-intendance.webp', status: 'draft', outcomes: [], verses: [], updatedAt: 0, modules: [{ id: uid('m'), title: 'Module 1', lessons: [] }] })
 const move = <T,>(a: T[], i: number, j: number) => { if (j < 0 || j >= a.length) return a; const b = [...a]; const [x] = b.splice(i, 1); b.splice(j, 0, x); return b }
-const pillars = ['Intendance biblique', 'Budget & revenus', 'Épargne avec sagesse', 'Planifier ses projets', 'Sortir des dettes', 'Donner & générosité']
+const pillars = ['Budget & organisation', 'Restauration & prospérité', 'Intendance biblique', 'Épargne', 'Sortir des dettes', 'Générosité']
 
 export default function AdminCourseEdit({ slug }: { slug?: string }) {
   useStore()
@@ -119,7 +119,7 @@ function LessonEditor({ l, onChange }: { l: Lesson; onChange: (l: Lesson) => voi
       {l.kind !== 'quiz' && <div><label className="label" htmlFor={`tr-${l.id}`}>{l.kind === 'video' ? 'Transcription complète' : 'Texte de la leçon'} (markdown : ## titre, - liste)</label><textarea id={`tr-${l.id}`} rows={8} className="input font-mono text-xs" value={l.transcript} onChange={(e) => set({ transcript: e.target.value })} /></div>}
       {l.kind === 'quiz' && <QuizEditor qs={l.quiz ?? []} onChange={(quiz) => set({ quiz, duration: `${quiz.length} questions` })} />}
       <div><p className="label">PDF téléchargeables</p>
-        <ul className="space-y-1.5">{l.pdfs.map((f) => <li key={f.id} className="flex items-center gap-2 text-sm"><FileText className="h-4 w-4 text-gold-deep" /><span className="flex-1">{f.name} <span className="text-xs text-mute">({Math.round(f.size / 1024)} Ko)</span></span><button onClick={() => { delFile(f.ref); set({ pdfs: l.pdfs.filter((x) => x.id !== f.id) }) }} aria-label={`Retirer ${f.name}`} className="text-mute hover:text-red-600"><X className="h-4 w-4" /></button></li>)}</ul>
+        <ul className="space-y-1.5">{l.pdfs.map((f) => <li key={f.id} className="flex items-center gap-2 text-sm"><FileText className="h-4 w-4 text-gold-deep" /><span className="flex-1">{f.name} <span className="text-xs text-mute">({Math.round(f.size / 1024)} Ko)</span></span><button onClick={() => { if (f.ref) delFile(f.ref); set({ pdfs: l.pdfs.filter((x) => x.id !== f.id) }) }} aria-label={`Retirer ${f.name}`} className="text-mute hover:text-red-600"><X className="h-4 w-4" /></button></li>)}</ul>
         <input ref={pIn} type="file" accept="application/pdf" multiple className="hidden" onChange={async (e) => { const fs = [...(e.target.files ?? [])]; const add = await Promise.all(fs.map(async (f) => ({ id: uid('p'), name: f.name, size: f.size, ref: await putFile(f) }))); set({ pdfs: [...l.pdfs, ...add] }); e.target.value = '' }} />
         <button className="btn-ghost mt-2 py-1.5" onClick={() => pIn.current?.click()}><Upload className="h-3.5 w-3.5" />Ajouter un PDF</button></div>
     </div>

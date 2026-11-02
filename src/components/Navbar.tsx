@@ -5,7 +5,7 @@ import { Link, navigate, usePath } from '../lib/router'
 import { currentUser, logout, useStore } from '../lib/store'
 import { Logo } from './ui'
 
-const links = [['/', 'Accueil'], ['/formations', 'Formations'], ['/a-propos', 'À propos'], ['/#tarifs', 'Tarifs'], ['/#contact', 'Contact']] as const
+const links = [['/', 'Accueil'], ['/formations', 'Formations'], ['/a-propos', 'À propos'], ['/ressources', 'Ressources'], ['/#tarifs', 'Tarifs'], ['/#contact', 'Contact']] as const
 
 export function Navbar() {
   useStore(); const path = usePath(); const u = currentUser(); const [open, setOpen] = useState(false)

@@ -1,4 +1,5 @@
 import { brand, socials } from '../content/brand'
+import { getResources } from '../lib/store'
 import { Link } from '../lib/router'
 import { SocialIcon } from './SocialIcon'
 import { Logo } from './ui'
@@ -6,7 +7,7 @@ import { Logo } from './ui'
 export function Footer() {
   return (
     <footer className="bg-green-deep text-cream">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
         <div>
           <Logo size={52} light />
           <p className="display mt-4 max-w-sm text-xl italic text-cream/90">« {brand.slogan} »</p>
@@ -15,7 +16,13 @@ export function Footer() {
         <div>
           <p className="caps mb-4 text-xs text-gold">Plateforme</p>
           <ul className="space-y-2 text-sm text-cream/80">
-            {[['/formations', 'Toutes les formations'], ['/a-propos', 'À propos'], ['/#tarifs', 'Tarifs'], ['/#faq', 'Questions fréquentes'], ['/certificats', 'Vérifier un certificat'], ['/mon-espace', 'Mon espace']].map(([to, l]) => <li key={to}><Link to={to} className="hover:text-gold">{l}</Link></li>)}
+            {[['/formations', 'Toutes les formations'], ['/a-propos', 'À propos'], ['/ressources', 'Ressources'], ['/#tarifs', 'Tarifs'], ['/#faq', 'Questions fréquentes'], ['/certificats', 'Vérifier un certificat'], ['/mon-espace', 'Mon espace']].map(([to, l]) => <li key={to}><Link to={to} className="hover:text-gold">{l}</Link></li>)}
+          </ul>
+        </div>
+        <div>
+          <p className="caps mb-4 text-xs text-gold">Livre & planner</p>
+          <ul className="space-y-2 text-sm text-cream/80">
+            {getResources().map((r) => <li key={r.id}><a href={r.url} target="_blank" rel="noopener noreferrer" className="hover:text-gold">{r.title}</a><span className="block text-xs text-cream/50">{r.kind} · Amazon</span></li>)}
           </ul>
         </div>
         <div>

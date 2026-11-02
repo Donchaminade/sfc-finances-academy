@@ -6,7 +6,7 @@
 
 **La sagesse divine au service de vos finances**
 
-An e-learning platform with a showcase site, a Coursera-style learning space, simulated checkout, certificates and an admin studio. Built for **SFC Finances**, Christian financial education from Lomé, Togo.
+An e-learning platform with a showcase site, a Coursera-style learning space, simulated checkout, certificates and an admin studio. Built for **SFC Finances**, Christian financial education in French.
 
 [**🌐 Live demo**](https://sfc-finances-academy.vercel.app) · [Portfolio](https://donchaminade-alpha.vercel.app) · [Brand charter](docs/brand.md) · [Demo accounts](DEMO_ACCOUNTS.md)
 
@@ -21,8 +21,12 @@ An e-learning platform with a showcase site, a Coursera-style learning space, si
 ## ✨ Features
 
 **Showcase site**
-- Landing page with the brand promise, the founders' story (Directrice and Odile T.), values, plans in €, an FAQ, and contact links to YouTube, Facebook, Instagram and the WhatsApp channel.
-- Catalogue with filters, plus course pages showing the syllabus, learning outcomes, instructor and price (also converted to FCFA).
+- Landing page with the brand promise, the founders' story (Directrice and Odile T.), values, pricing in € (with approximate FCFA), an FAQ, and contact links to YouTube, Facebook, Instagram and the WhatsApp channel.
+- **Two paid formations** taught by Odile T., each structured week by week with its own page at `/formations/:slug`:
+  - *Reprendre le contrôle de vos finances*: 3 weeks, 70 €.
+  - *Restaurer et Prospère*: 8 weeks, 500 €. The title and duration live in a single constant (`F2` in `src/data/seed.ts`).
+- Each week has a video lesson with a transcript, a reading with a downloadable workbook PDF, and a quiz. A purchase unlocks **only** the formation bought.
+- **Ressources** section and `/ressources` page with Odile T.'s book and planner, linking to Amazon. They can be edited from `/admin/ressources`.
 
 **Learning space (LMS)**
 - Sign-up and log-in (simulated; passwords are hashed with SHA-256 and kept in local storage).
@@ -36,6 +40,7 @@ An e-learning platform with a showcase site, a Coursera-style learning space, si
 - Dashboard KPIs: learners, sales, completion and average progress.
 - CRUD for formations, and a **content builder** where modules and lessons can be reordered by drag-and-drop or arrows. Video and PDF uploads are stored in IndexedDB; the builder also has a transcript editor and a quiz editor.
 - A users list, with each learner's progress detail.
+- A resources editor (title, cover, price, Amazon link, order).
 
 **Quality**
 - Installable **PWA** with offline shell and cached fonts.
@@ -56,6 +61,8 @@ An e-learning platform with a showcase site, a Coursera-style learning space, si
 | ![](docs/screenshots/06-dashboard-resume.png) | ![](docs/screenshots/18-certificate.png) |
 | **Admin dashboard** | **Content builder** |
 | ![](docs/screenshots/20-admin-dashboard.png) | ![](docs/screenshots/22-admin-builder.png) |
+| **Ressources** | **Admin resources** |
+| ![](docs/screenshots/04b-ressources.png) | ![](docs/screenshots/25-admin-ressources.png) |
 
 <p align="center"><img src="docs/screenshots/mobile-landing.png" width="240" /> <img src="docs/screenshots/mobile-catalogue.png" width="240" /></p>
 
@@ -107,11 +114,11 @@ Brand, copy and photos © SFC Finances.
 
 ## 🇫🇷 Résumé en français
 
-**SFC Finances Academy** est la plateforme de formation en ligne de SFC Finances (Lomé, Togo). Elle propose :
+**SFC Finances Academy** est la plateforme de formation en ligne de SFC Finances. Elle propose :
 
-- un site vitrine ;
-- un espace apprenant façon Coursera : achat simulé par Mobile Money ou carte, leçons débloquées l'une après l'autre, reprise automatique, progression par cours et par module, quiz et certificat PDF/PNG vérifiable ;
-- un studio d'administration : gestion des formations, constructeur de contenu, suivi des apprenants et indicateurs.
+- un site vitrine avec deux formations payantes d'Odile T., « Reprendre le contrôle de vos finances » (3 semaines, 70 €) et « Restaurer et Prospère » (8 semaines, 500 €), ainsi qu'une page Ressources (livre et planner sur Amazon) ;
+- un espace apprenant façon Coursera : achat simulé par Mobile Money ou carte, leçons débloquées l'une après l'autre, reprise automatique, progression par cours et par semaine, cahier d'exercices PDF, quiz et certificat PDF/PNG vérifiable ;
+- un studio d'administration : gestion des formations et des ressources, constructeur de contenu, suivi des apprenants et indicateurs.
 
 C'est une maquette fonctionnelle sans backend : les données restent dans votre navigateur.
 

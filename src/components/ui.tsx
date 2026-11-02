@@ -46,9 +46,11 @@ export function Modal({ open, onClose, title, children }: { open: boolean; onClo
   )
 }
 
-export function Cover({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
+export function Cover({ src, alt, className = '', fallbackTitle }: { src: string; alt: string; className?: string; fallbackTitle?: string }) {
   const url = useFileUrl(src)
-  return url ? <img src={url} alt={alt} loading="lazy" className={`object-cover ${className}`} /> : <div className={`bg-sand ${className}`} />
+  if (url) return <img src={url} alt={alt} loading="lazy" className={`object-cover ${className}`} />
+  if (fallbackTitle) return <div role="img" aria-label={alt} className={`flex flex-col justify-between border-4 border-double border-gold bg-green p-4 text-cream ${className}`}><span className="caps text-[10px] text-gold">SFC Finances</span><span className="display text-lg font-semibold leading-tight">{fallbackTitle}</span><span className="text-[10px] text-cream/70">Odile T.</span></div>
+  return <div className={`bg-sand ${className}`} />
 }
 
 export function Eyebrow({ children, light }: { children: ReactNode; light?: boolean }) {

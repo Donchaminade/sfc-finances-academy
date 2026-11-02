@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { Parallax, Reveal } from '../components/motion'
 import { Bar, ProgressRing } from '../components/ProgressRing'
 import { Cover, Eyebrow } from '../components/ui'
-import { SITE_URL, odile } from '../content/brand'
+import { odile } from '../content/brand'
 import { Link } from '../lib/router'
-import { useSeo } from '../lib/seo'
+import { courseLd, useSeo } from '../lib/seo'
 import { currentUser, eur, fcfa, getCourse, getProgress, isUnlocked, lessonsOf, modulePercent, owns, percent, resumeLesson, useStore } from '../lib/store'
 import NotFound from './NotFound'
 
@@ -16,11 +16,8 @@ export default function CourseDetail({ slug }: { slug: string }) {
   const c = getCourse(slug); const u = currentUser()
   const visible = c && (c.status === 'published' || u?.role === 'admin')
   useSeo(visible ? {
-    title: c.title, description: c.description.slice(0, 155), path: `/formations/${c.slug}`, noindex: c.status !== 'published',
-    jsonld: [{ '@context': 'https://schema.org', '@type': 'Course', name: c.title, description: c.description, inLanguage: 'fr', url: `${SITE_URL}/formations/${c.slug}`,
-      provider: { '@type': 'EducationalOrganization', name: 'SFC Finances', sameAs: SITE_URL }, instructor: { '@type': 'Person', name: odile.name, jobTitle: odile.role },
-      offers: { '@type': 'Offer', price: c.price, priceCurrency: 'EUR', category: 'Paid', availability: 'https://schema.org/InStock' },
-      hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'online', courseWorkload: 'PT2H' } }],
+    title: c.title, description: `Formation en ligne de ${c.duration} avec Odile T., ${eur(c.price)} : ${c.subtitle.toLowerCase()}. Leçons, cahier PDF, quiz et certificat.`, path: `/formations/${c.slug}`, noindex: c.status !== 'published',
+    jsonld: [courseLd(c)],
   } : { title: 'Formation introuvable', description: 'Cette formation n’existe pas.', path: `/formations/${slug}`, noindex: true })
   const [open, setOpen] = useState(0)
   if (!c || !visible) return <NotFound />
@@ -50,9 +47,8 @@ export default function CourseDetail({ slug }: { slug: string }) {
                   <div className="flex items-center gap-4"><ProgressRing value={pct} /><div><p className="font-semibold text-green">{pct === 100 ? 'Formation terminée' : pct ? 'En cours' : 'Prêt à commencer'}</p><p className="text-sm text-mute">{p.done.length} / {lessonsOf(c).length} leçons</p></div></div>
                   <Link to={`/apprendre/${c.slug}/${resume}`} className="btn-primary mt-5 w-full py-3">{pct ? 'Reprendre' : 'Commencer'}</Link>
                 </> : <>
-                  <p className="num display text-4xl font-semibold text-green">{eur(c.price)}</p><p className="text-sm text-mute">≈ {fcfa(c.price)} · accès à vie</p>
+                  <p className="num display text-4xl font-semibold text-green">{eur(c.price)}</p><p className="text-sm text-mute">≈ {fcfa(c.price)} · accès à vie à cette formation</p>
                   <Link to={u ? `/paiement/${c.slug}` : `/inscription?next=/paiement/${c.slug}`} className="btn-primary mt-5 w-full py-3">Acheter la formation</Link>
-                  <Link to={u ? '/paiement/pass' : '/inscription?next=/paiement/pass'} className="btn-ghost mt-2 w-full">Ou tout le catalogue avec le Pass Sagesse</Link>
                   <p className="mt-3 text-center text-xs text-mute">Paiement simulé · Mobile Money ou carte</p>
                 </>}
               </div>

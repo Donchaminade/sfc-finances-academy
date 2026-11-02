@@ -1,5 +1,5 @@
 // Public routes that are prerendered and listed in the sitemap.
-export const slugs = ['intendance-biblique-des-finances', 'budget-et-gestion-des-revenus', 'epargner-avec-sagesse', 'planifier-ses-projets', 'sortir-des-dettes', 'donner-et-generosite']
-export const routes = ['/', '/formations', '/a-propos', '/certificats', ...slugs.map((s) => `/formations/${s}`)]
+export const slugs = ['reprendre-le-controle-de-vos-finances', 'restaurer-et-prosperer']
+export const routes = ['/', '/formations', '/a-propos', '/ressources', '/certificats', ...slugs.map((s) => `/formations/${s}`)]
 // Prerendered too (noindex), but not listed in the sitemap.
 export const extraRoutes = ['/connexion', '/inscription']

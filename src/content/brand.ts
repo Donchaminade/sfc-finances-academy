@@ -12,7 +12,7 @@ export const brand = {
     'Notre mission est de vous aider à concilier foi, sagesse et bonne gestion financière afin de construire une vie financière plus saine, équilibrée et sereine.',
   withOdile: 'Avec Odile T., conseillère en finances personnelles, apprenez à comprendre les finances selon la Parole de Dieu.',
   socialLine: 'Retrouvez-nous sur YouTube, Facebook et Instagram (@sfc_finances), et rejoignez notre chaîne WhatsApp.',
-  location: 'Lomé, Togo',
+  location: 'Paris, France',
   handle: '@sfc_finances',
 }
 
@@ -51,23 +51,19 @@ export const pillars = [
 ]
 
 export const testimonials = [
-  { name: 'Afi M.', city: 'Lomé', text: 'Pour la première fois, je sais où va mon salaire. Le module budget m’a apporté beaucoup de paix à la maison.' },
-  { name: 'Kossi A.', city: 'Kara', text: 'Les leçons sont courtes et claires. Relier la Parole à mes choix d’argent a changé ma façon de dépenser.' },
-  { name: 'Mireille D.', city: 'Cotonou', text: 'J’ai commencé une épargne régulière dès la deuxième semaine. Le ton est bienveillant, jamais culpabilisant.' },
-  { name: 'Yao K.', city: 'Lomé', text: 'Le plan de sortie des dettes m’a redonné espoir. Je suis la progression module par module.' },
+  { name: 'Afi M.', text: 'Pour la première fois, je sais où va mon salaire. La formation m’a apporté beaucoup de paix à la maison.' },
+  { name: 'Kossi A.', text: 'Les leçons sont courtes et claires. Relier la Parole à mes choix d’argent a changé ma façon de dépenser.' },
+  { name: 'Mireille D.', text: 'J’ai commencé une épargne régulière dès la deuxième semaine. Le ton est bienveillant, jamais culpabilisant.' },
+  { name: 'Yao K.', text: 'Le plan de sortie des dettes m’a redonné espoir. Je suis la progression semaine après semaine.' },
 ]
 
 export const faq = [
   { q: 'À qui s’adressent les formations SFC Finances ?', a: 'À toute personne qui souhaite mieux gérer ses finances à la lumière de la Parole de Dieu : étudiants, jeunes actifs, couples, familles, entrepreneurs et responsables d’église.' },
   { q: 'Faut-il des connaissances en finance pour commencer ?', a: 'Non. Les parcours partent des bases et avancent pas à pas, avec des exemples simples et des exercices pratiques.' },
-  { q: 'Comment se déroule une formation ?', a: 'Chaque formation est découpée en modules et en leçons (vidéo ou lecture). Les leçons se débloquent dans l’ordre, et un quiz valide chaque étape. Vous pouvez arrêter et reprendre exactement là où vous étiez.' },
+  { q: 'Comment se déroule une formation ?', a: 'Chaque formation est découpée en semaines, avec des leçons vidéo ou lecture, un cahier d’exercices PDF et un quiz hebdomadaire. Les leçons se débloquent dans l’ordre, et un quiz valide chaque étape. Vous pouvez arrêter et reprendre exactement là où vous étiez.' },
   { q: 'Est-ce que j’obtiens un certificat ?', a: 'Oui. Lorsque vous atteignez 100 % et réussissez l’évaluation finale, un certificat SFC Finances à votre nom est délivré, avec un identifiant unique et une page de vérification.' },
-  { q: 'Quels moyens de paiement sont acceptés ?', a: 'Mobile Money (Flooz, T-Money) et carte bancaire. Sur cette démonstration, le paiement est entièrement simulé : aucune somme n’est débitée.' },
+  { q: 'Quels moyens de paiement sont acceptés ?', a: 'Mobile Money (Flooz, T-Money) et carte bancaire. Chaque achat débloque uniquement la formation choisie. Sur cette démonstration, le paiement est entièrement simulé : aucune somme n’est débitée.' },
   { q: 'Les enseignements remplacent-ils un conseil personnalisé ?', a: 'Non. Les formations donnent des repères et des outils d’éducation financière. Pour une situation particulière, rapprochez-vous d’un professionnel qualifié.' },
 ]
 
-export const plans = [
-  { name: 'Formation à l’unité', price: 'dès 19 €', period: 'accès à vie', features: ['Une formation au choix', 'Leçons vidéo et lecture', 'Quiz et suivi de progression', 'Certificat de réussite'], cta: 'Voir les formations', highlight: false },
-  { name: 'Pass Sagesse', price: '79 €', period: '12 mois', features: ['Toutes les formations', 'Nouveaux contenus inclus', 'Reprise et suivi multi-cours', 'Tous les certificats'], cta: 'Choisir le Pass', highlight: true },
-  { name: 'Églises & groupes', price: 'Sur demande', period: 'tarif groupe', features: ['Accès pour vos membres', 'Parcours adaptés aux groupes', 'Suivi de la progression', 'Accompagnement à l’organisation'], cta: 'Nous écrire', highlight: false },
-]
+export const groupOffer = { name: 'Églises & groupes', price: 'Sur demande', period: 'tarif groupe', features: ['Accès pour vos membres', 'Parcours adaptés aux groupes', 'Suivi de la progression', 'Accompagnement à l’organisation'], cta: 'Nous écrire' }

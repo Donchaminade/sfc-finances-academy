@@ -1,8 +1,9 @@
+import type { Course } from '../data/types'
 import { useEffect } from 'react'
 import { SITE_URL, brand, odile, socials } from '../content/brand'
 import { directrice } from '../content/about'
 
-const KEYWORDS = 'finance, éducation financière, SFC Finances, Togo, Lomé, finances chrétiennes, gestion financière biblique, budget, épargne, dettes'
+const KEYWORDS = 'finance, éducation financière, finances chrétiennes, SFC Finances, Paris, France, francophone, budget, épargne'
 
 function meta(attr: 'name' | 'property', key: string, val: string) {
   let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`)
@@ -40,8 +41,8 @@ export function useSeo({ title, description, path, noindex, image = '/og-image.p
 export const orgLd = {
   '@context': 'https://schema.org', '@type': 'EducationalOrganization', name: brand.name, slogan: brand.slogan,
   url: SITE_URL, logo: SITE_URL + '/icons/icon-512.png', description: brand.mission,
-  address: { '@type': 'PostalAddress', addressLocality: 'Lomé', addressCountry: 'TG' },
-  areaServed: 'Togo', sameAs: socials.map((s) => s.url),
+  address: { '@type': 'PostalAddress', addressLocality: 'Paris', addressCountry: 'FR' },
+  sameAs: socials.map((s) => s.url),
 }
 export const odileLd = {
   '@context': 'https://schema.org', '@type': 'Person', name: odile.name, jobTitle: odile.role,
@@ -54,4 +55,13 @@ export const directriceLd = {
 export const faqLd = (items: readonly { q: string; a: string }[]) => ({
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: items.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+})
+
+const weeks = (d: string) => Number(/(\d+)\s*semaine/.exec(d)?.[1] ?? 0)
+export const courseLd = (c: Course) => ({
+  '@context': 'https://schema.org', '@type': 'Course', name: c.title, description: c.description, inLanguage: 'fr', url: `${SITE_URL}/formations/${c.slug}`,
+  image: SITE_URL + c.cover, provider: { '@type': 'EducationalOrganization', name: brand.name, sameAs: SITE_URL },
+  instructor: { '@type': 'Person', name: odile.name, jobTitle: odile.role },
+  offers: { '@type': 'Offer', price: c.price, priceCurrency: 'EUR', category: 'Paid', availability: 'https://schema.org/InStock', url: `${SITE_URL}/formations/${c.slug}` },
+  hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'online', ...(weeks(c.duration) ? { courseSchedule: { '@type': 'Schedule', duration: `P${weeks(c.duration)}W`, repeatFrequency: 'P1W' } } : {}), instructor: { '@type': 'Person', name: odile.name } },
 })

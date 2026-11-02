@@ -1,5 +1,5 @@
 export type Question = { q: string; options: string[]; answer: number }
-export type Pdf = { id: string; name: string; size: number; ref: string }
+export type Pdf = { id: string; name: string; size: number; ref: string; url?: string }
 export type VideoSrc = { type: 'demo' | 'file' | 'url'; src: string }
 export type Lesson = {
   id: string

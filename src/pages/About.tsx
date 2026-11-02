@@ -6,7 +6,7 @@ import { Link } from '../lib/router'
 import { directriceLd, odileLd, useSeo } from '../lib/seo'
 
 export default function About() {
-  useSeo({ title: 'À propos : notre histoire et notre mission', description: 'Découvrez SFC Finances, plateforme d’éducation financière chrétienne basée à Lomé (Togo) : notre fondatrice, notre mission, nos valeurs et Odile T.', path: '/a-propos', jsonld: [directriceLd, odileLd] })
+  useSeo({ title: 'À propos : notre histoire et notre mission', description: 'Découvrez SFC Finances, plateforme d’éducation financière chrétienne francophone : notre fondatrice, notre mission, nos valeurs et Odile T.', path: '/a-propos', jsonld: [directriceLd, odileLd] })
   return (
     <>
       <section className="mx-auto max-w-6xl px-4 pb-10 pt-14 sm:px-6">

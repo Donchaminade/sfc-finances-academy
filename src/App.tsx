@@ -18,6 +18,8 @@ import AdminCourseEdit from './pages/admin/AdminCourseEdit'
 import AdminCourses from './pages/admin/AdminCourses'
 import AdminHome from './pages/admin/AdminHome'
 import AdminUsers, { AdminUser } from './pages/admin/AdminUsers'
+import AdminResources from './pages/admin/AdminResources'
+import Resources from './pages/Resources'
 
 getCourses()
 
@@ -28,6 +30,7 @@ function route(path: string) {
   if (p === '/formations') return <Formations />
   if ((m = match('/formations/:slug', p))) return <CourseDetail slug={m.slug} />
   if (p === '/a-propos') return <About />
+  if (p === '/ressources') return <Resources />
   if (p === '/connexion') return <Auth mode="login" />
   if (p === '/inscription') return <Auth mode="signup" />
   if ((m = match('/paiement/:item', p))) return <Checkout item={m.item} />
@@ -41,6 +44,7 @@ function route(path: string) {
   if (p === '/admin/formations/nouvelle') return <AdminCourseEdit />
   if ((m = match('/admin/formations/:slug', p))) return <AdminCourseEdit key={m.slug} slug={m.slug} />
   if (p === '/admin/utilisateurs') return <AdminUsers />
+  if (p === '/admin/ressources') return <AdminResources />
   if ((m = match('/admin/utilisateurs/:id', p))) return <AdminUser id={m.id} />
   return <NotFound />
 }

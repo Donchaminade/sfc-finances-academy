@@ -4,25 +4,24 @@ import { useState } from 'react'
 import { AsyncButton, Cover, DemoNote } from '../components/ui'
 import { Link, Redirect } from '../lib/router'
 import { useSeo } from '../lib/seo'
-import { addPurchase, currentUser, eur, fcfa, getCourse, lessonsOf, owns, publishedCourses, useStore } from '../lib/store'
+import { addPurchase, currentUser, eur, fcfa, getCourse, lessonsOf, owns, useStore } from '../lib/store'
 import NotFound from './NotFound'
 
-const PASS_PRICE = 79
 
 export default function Checkout({ item }: { item: string }) {
   useStore()
   useSeo({ title: 'Paiement', description: 'Finalisez votre accès à la formation.', path: `/paiement/${item}`, noindex: true })
   const u = currentUser()
-  const c = item === 'pass' ? undefined : getCourse(item)
+  const c = getCourse(item)
   const [method, setMethod] = useState<'momo' | 'card'>('momo')
   const [op, setOp] = useState<'Flooz' | 'T-Money'>('Flooz')
   const [step, setStep] = useState(1)
   const [ref, setRef] = useState('')
   if (!u) return <Redirect to={`/connexion?next=/paiement/${item}`} />
-  if (item !== 'pass' && (!c || c.status !== 'published')) return <NotFound />
-  const title = c ? c.title : 'Pass Sagesse (12 mois)'
-  const price = c ? c.price : PASS_PRICE
-  if (step === 1 && c && owns(u.id, c.slug)) return <div className="mx-auto max-w-lg px-4 py-24 text-center"><h1 className="display text-4xl font-semibold text-green">Vous avez déjà accès</h1><Link to={`/formations/${c.slug}`} className="btn-primary mt-6">Aller à la formation</Link></div>
+  if (!c || c.status !== 'published') return <NotFound />
+  const title = c.title
+  const price = c.price
+  if (step === 1 && owns(u.id, c.slug)) return <div className="mx-auto max-w-lg px-4 py-24 text-center"><h1 className="display text-4xl font-semibold text-green">Vous avez déjà accès</h1><Link to={`/formations/${c.slug}`} className="btn-primary mt-6">Aller à la formation</Link></div>
 
   const pay = async () => {
     await new Promise((r) => setTimeout(r, 1600))
@@ -30,7 +29,7 @@ export default function Checkout({ item }: { item: string }) {
     addPurchase(u.id, { item, amount: price, method: method === 'card' ? 'Carte' : op, date: Date.now(), ref: r })
     setRef(r); setTimeout(() => setStep(3), 600)
   }
-  const first = c ? lessonsOf(c)[0]?.id : undefined
+  const first = lessonsOf(c)[0]?.id
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
       <h1 className="display text-4xl font-semibold text-green sm:text-5xl">Paiement sécurisé</h1>
@@ -65,17 +64,17 @@ export default function Checkout({ item }: { item: string }) {
               <p className="mt-2 text-mute">Référence (démo) : <span className="num font-semibold">{ref}</span></p>
               <p className="mt-1 text-mute">Votre accès à « {title} » est actif.</p>
               <div className="mt-6 flex flex-wrap justify-center gap-3">
-                {c && first ? <Link to={`/apprendre/${c.slug}/${first}`} className="btn-primary px-6 py-3">Commencer la formation</Link> : <Link to="/mon-espace" className="btn-primary px-6 py-3">Accéder à mes formations</Link>}
+                {first ? <Link to={`/apprendre/${c.slug}/${first}`} className="btn-primary px-6 py-3">Commencer la formation</Link> : <Link to="/mon-espace" className="btn-primary px-6 py-3">Accéder à mes formations</Link>}
                 <Link to="/mon-espace" className="btn-ghost">Mon espace</Link>
               </div>
             </motion.div>}
           </AnimatePresence>
         </div>
         <aside className="card h-fit overflow-hidden">
-          {c ? <Cover src={c.cover} alt={`Illustration de la formation ${c.title}`} className="aspect-[16/9] w-full" /> : <div className="grid aspect-[16/9] place-items-center bg-green text-center text-cream"><p className="display text-3xl">Pass Sagesse</p></div>}
+          <Cover src={c.cover} alt={`Illustration de la formation ${c.title}`} className="aspect-[16/9] w-full" />
           <div className="p-5">
             <h2 className="font-semibold text-green">{title}</h2>
-            <p className="mt-1 text-sm text-mute">{c ? `${lessonsOf(c).length} leçons · accès à vie · certificat` : `${publishedCourses().length} formations · 12 mois · tous les certificats`}</p>
+            <p className="mt-1 text-sm text-mute">{`${lessonsOf(c).length} leçons · ${c.duration} · accès à vie · certificat`}</p>
             <div className="mt-4 flex items-baseline justify-between border-t border-line pt-4"><span className="text-sm text-mute">Total</span><span className="num display text-3xl font-semibold text-green">{eur(price)}</span></div>
             <p className="mt-3 flex items-center gap-2 text-xs text-mute"><ShieldCheck className="h-4 w-4 text-green" />Paiement simulé, sans données réelles</p>
           </div>

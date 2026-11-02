@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from 'react'
 import { seedCourses } from '../data/seed'
+import { defaultResources, type Resource } from '../content/resources'
 import type { Course } from '../data/types'
 import { DEMO_ADMIN, DEMO_LEARNER } from '../data/demo'
 
@@ -23,9 +24,9 @@ export async function sha256(s: string) {
 }
 
 /* ---------- courses ---------- */
-const SEED_V = 'v1'
+const SEED_V = 'v2'
 export function getCourses(): Course[] {
-  if (localStorage.getItem('sfc.seed') !== SEED_V) { localStorage.setItem('sfc.courses', JSON.stringify(seedCourses)); localStorage.setItem('sfc.seed', SEED_V) }
+  if (localStorage.getItem('sfc.seed') !== SEED_V) { if (localStorage.getItem('sfc.seed')) Object.keys(localStorage).filter((k) => k.startsWith('sfc.') && k !== 'sfc.resources').forEach((k) => localStorage.removeItem(k)); localStorage.setItem('sfc.courses', JSON.stringify(seedCourses)); localStorage.setItem('sfc.seed', SEED_V) }
   return read<Course[]>('sfc.courses', seedCourses)
 }
 export const publishedCourses = () => getCourses().filter((c) => c.status === 'published')
@@ -62,8 +63,7 @@ export const logout = () => { localStorage.removeItem('sfc.session'); emit() }
 /* ---------- purchases ---------- */
 export const getPurchases = (uid: string) => read<Purchase[]>(`sfc.purchases.${uid}`, [])
 export const addPurchase = (uid: string, p: Purchase) => write(`sfc.purchases.${uid}`, [...getPurchases(uid), p])
-export const hasPass = (uid: string) => getPurchases(uid).some((p) => p.item === 'pass')
-export const owns = (uid: string | undefined, slug: string) => !!uid && (hasPass(uid) || getPurchases(uid).some((p) => p.item === slug))
+export const owns = (uid: string | undefined, slug: string) => !!uid && getPurchases(uid).some((p) => p.item === slug)
 export const ownedCourses = (uid: string) => getCourses().filter((c) => owns(uid, c.slug) && c.status === 'published')
 
 /* ---------- progress ---------- */
@@ -110,16 +110,15 @@ export function issueCert(u: User, c: Course) {
 let demoP: Promise<void> | null = null
 export const ensureDemo = () => (demoP ??= seedDemo())
 async function seedDemo() {
-  if (localStorage.getItem('sfc.demo') === '2') return
+  if (localStorage.getItem('sfc.demo') === '3') return
   getCourses()
   const us = getUsers()
   for (const [acc, role] of [[DEMO_LEARNER, 'learner'], [DEMO_ADMIN, 'admin']] as const) {
     if (!us.some((u) => u.email === acc.email)) {
       const u = await register(acc.name, acc.email, acc.password, role)
       if (role === 'learner') {
-        const c = seedCourses[0], c2 = seedCourses[1]
+        const c = seedCourses[0]
         addPurchase(u.id, { item: c.slug, amount: c.price, method: 'Flooz', date: Date.now() - 86400e3 * 6, ref: 'DEMO-0001' })
-        addPurchase(u.id, { item: c2.slug, amount: c2.price, method: 'Carte', date: Date.now() - 86400e3 * 2, ref: 'DEMO-0002' })
         const ls = lessonsOf(c)
         const p: Progress = { done: ls.slice(0, 3).map((l) => l.id), last: ls[3].id, pos: { [ls[3].id]: 42 }, quiz: { [ls[2].id]: 100 }, updated: Date.now() }
         localStorage.setItem(pk(u.id, c.slug), JSON.stringify(p))
@@ -127,19 +126,24 @@ async function seedDemo() {
     }
   }
   /* a few illustrative learners for the admin table */
-  const sample = [['Kossi Agbeko', 'kossi.demo@sfc-demo.app', 2], ['Mireille Dossou', 'mireille.demo@sfc-demo.app', 4], ['Yao Kouassi', 'yao.demo@sfc-demo.app', 1]] as const
+  const sample = [['Kossi Agbeko', 'kossi.demo@sfc-demo.app', 2], ['Mireille Dossou', 'mireille.demo@sfc-demo.app', 2], ['Yao Kouassi', 'yao.demo@sfc-demo.app', 1]] as const
   for (const [name, email, k] of sample) {
     if (getUsers().some((u) => u.email === email)) continue
     const u = await register(name, email, crypto.randomUUID())
     seedCourses.slice(0, k).forEach((c, i) => {
       addPurchase(u.id, { item: c.slug, amount: c.price, method: i % 2 ? 'T-Money' : 'Flooz', date: Date.now() - 86400e3 * (10 - i), ref: 'DEMO-S' + i })
-      const ls = lessonsOf(c); const d = Math.max(1, Math.round(ls.length * ((k - i) / 4)))
+      const ls = lessonsOf(c); const d = Math.max(1, Math.round(ls.length * ((k - i) / 3)))
       localStorage.setItem(pk(u.id, c.slug), JSON.stringify({ done: ls.slice(0, d).map((l) => l.id), last: ls[Math.min(d, ls.length - 1)].id, pos: {}, quiz: {}, updated: Date.now() - 86400e3 * i }))
     })
   }
-  localStorage.setItem('sfc.demo', '2'); emit()
+  localStorage.setItem('sfc.demo', '3'); emit()
 }
 
 export const eur = (n: number) => n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: n % 1 ? 2 : 0 })
 /** Fixed parity EUR/XOF. */
 export const fcfa = (n: number) => Math.round(n * 655.957).toLocaleString('fr-FR') + ' FCFA'
+
+/* ---------- resources (Amazon products) ---------- */
+export const getResources = () => read<Resource[]>('sfc.resources', defaultResources)
+export const saveResources = (list: Resource[]) => write('sfc.resources', list)
+export const resetResources = () => { localStorage.removeItem('sfc.resources'); emit() }
