@@ -2,7 +2,7 @@
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { routes } from './routes.mjs'
+import { routes, extraRoutes } from './routes.mjs'
 
 const mem = new Map()
 globalThis.localStorage = { getItem: (k) => mem.get(k) ?? null, setItem: (k, v) => mem.set(k, String(v)), removeItem: (k) => mem.delete(k) }
@@ -11,10 +11,10 @@ globalThis.location = loc
 
 const { render } = await import(pathToFileURL(join(process.cwd(), 'dist-ssr/entry-server.js')).href)
 const shell = readFileSync('dist/index.html', 'utf8')
-writeFileSync('dist/200.html', shell)
+writeFileSync('dist/200.html', shell.replace(/\s*<link rel="canonical" href="[^"]*" \/?>/, '').replace('</head>', '    <meta name="robots" content="noindex, nofollow" />\n  </head>'))
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
-for (const r of routes) {
+for (const r of [...routes, ...extraRoutes]) {
   loc.pathname = r
   const head = {}; globalThis.__SSR_HEAD__ = head
   let html = render()
