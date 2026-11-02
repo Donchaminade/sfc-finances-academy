@@ -1,4 +1,4 @@
-import { useEffect, useSyncExternalStore, type AnchorHTMLAttributes, type MouseEvent } from 'react'
+import { useEffect, useState, useSyncExternalStore, type AnchorHTMLAttributes, type MouseEvent } from 'react'
 
 const subs = new Set<() => void>()
 if (typeof window !== 'undefined' && window.addEventListener) window.addEventListener('popstate', () => subs.forEach((s) => s()))
@@ -23,8 +23,15 @@ export function match(pattern: string, path: string) {
   return out
 }
 
+// App-only routes (auth, checkout, learner space, admin) get their href after hydration,
+// so the prerendered HTML only exposes public, indexable pages to crawlers.
+const APP_ROUTE = /^\/(connexion|inscription|paiement|mon-espace|apprendre|admin)(\/|\?|$)/
+
 export function Link({ to, onClick, ...p }: AnchorHTMLAttributes<HTMLAnchorElement> & { to: string }) {
-  return <a href={to} {...p} onClick={(e: MouseEvent<HTMLAnchorElement>) => {
+  const app = APP_ROUTE.test(to)
+  const [mounted, setMounted] = useState(!app)
+  useEffect(() => { if (app) setMounted(true) }, [app])
+  return <a href={mounted ? to : undefined} role={mounted ? undefined : 'link'} {...p} onClick={(e: MouseEvent<HTMLAnchorElement>) => {
     onClick?.(e)
     if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
     e.preventDefault(); navigate(to)

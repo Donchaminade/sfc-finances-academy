@@ -1,8 +1,8 @@
 User-agent: *
-Allow: /
 Disallow: /admin
 Disallow: /mon-espace
 Disallow: /apprendre
 Disallow: /paiement
+Allow: /
 
 Sitemap: https://sfc-finances-academy.vercel.app/sitemap.xml
