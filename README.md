@@ -8,7 +8,7 @@
 
 An e-learning platform with a showcase site, a Coursera-style learning space, simulated checkout, certificates and an admin studio. Built for **SFC Finances**, Christian financial education from Lomé, Togo.
 
-[**🌐 Live demo**](__LIVE__) · [Portfolio](https://donchaminade-alpha.vercel.app) · [Brand charter](docs/brand.md) · [Demo accounts](DEMO_ACCOUNTS.md)
+[**🌐 Live demo**](https://sfc-finances-academy.vercel.app) · [Portfolio](https://donchaminade-alpha.vercel.app) · [Brand charter](docs/brand.md) · [Demo accounts](DEMO_ACCOUNTS.md)
 
 ⭐ **If this project helps or inspires you, please Star & Fork it!** ⭐
 
@@ -115,7 +115,7 @@ Brand, copy and photos © SFC Finances.
 
 C'est une maquette fonctionnelle sans backend : les données restent dans votre navigateur.
 
-👉 [Voir la démo](__LIVE__) · Comptes de démonstration : [DEMO_ACCOUNTS.md](DEMO_ACCOUNTS.md)
+👉 [Voir la démo](https://sfc-finances-academy.vercel.app) · Comptes de démonstration : [DEMO_ACCOUNTS.md](DEMO_ACCOUNTS.md)
 
 Conçu par **[Donchaminade](https://donchaminade-alpha.vercel.app)**. ⭐ Une étoile fait toujours plaisir !
 
